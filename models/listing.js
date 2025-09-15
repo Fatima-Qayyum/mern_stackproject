@@ -1,17 +1,26 @@
-const mongoose=require('mongoose');
-const Schema=mongoose.Schema;
 
-const listingSchmea =new Schema({
-    title:{type:String, required:true},
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-    description:String,
-    price:Number,
-    location:String,
-    country:String,
-    image:{ type:String,set:(v)=>v===""?"https://images.unsplash.com/photo-1755441172753-ac9b90dcd930?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D":v, default:"https://images.unsplash.com/photo-1755441172753-ac9b90dcd930?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
-    }
-);
+const listingSchema = new Schema({
+  title:{
+type:String,
+required:true,
+  } ,
 
-const Listing=mongoose.model('Listing',listingSchmea);
-module.exports=Listing;
+  description: String,
 
+
+  image:{type:String,
+    default:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQykzoZeCE0p7LeuyHnLYCdPP2jju9d5PaMeA&s",set:(v)=>v===""?"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQykzoZeCE0p7LeuyHnLYCdPP2jju9d5PaMeA&s":v},
+  price: Number,
+  location: String,
+  country: String,
+});
+
+
+
+
+
+const Listing = mongoose.model("Listing", listingSchema);
+module.exports = Listing;
