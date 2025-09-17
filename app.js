@@ -6,6 +6,8 @@ const Listing=require("./models/listing.js")
 const path=require('path');
 app.set('view engine','ejs')
 app.set('views',path.join(__dirname,'views'));
+app.use(express.urlencoded({ extended: true }));
+
 
 const Mongoose_Url="mongodb://127.0.0.1:27017/wanderlust";
 async function main() {
@@ -48,10 +50,40 @@ country:'Pakistan',
     
 })*/
 
+
+
+
+
+// New listing
+
+app.get('/listings/new', (req, res) => {
+    res.render('listings/new');
+});
+
+
+
+
 //index Route
 
 app.get('/listings',async(req,res)=>{
 const allListing= await Listing.find({});
 res.render('listings/index',{allListing});
 
+})
+
+//show route
+app.get('/listings/:id',async(req,res)=>{
+    let{id}=req.params;
+   const listing= await Listing.findById(id);
+   res.render('listings/show',{listing})
+
+
+})
+//create
+
+app.post('/listings',async(req,res)=>{
+   // let {title,description,image,location,country}=req.body;
+   const newListing=new Listing (req.body.Listing);
+   await newListing.save();
+    res.redirect('/listings')
 })
