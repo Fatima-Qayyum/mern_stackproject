@@ -1,11 +1,15 @@
 const express=require('express');
+const methodOverride = require("method-override");
 const app=express();
 const mongoose=require('mongoose');
 const port=8080;
-const Listing=require("./models/listing.js")
+const Listing=require("./models/listing.js");
+const ejsMate = require('ejs-mate');
+app.engine('ejs', ejsMate);
 const path=require('path');
 app.set('view engine','ejs')
 app.set('views',path.join(__dirname,'views'));
+app.use(methodOverride("_method"));
 app.use(express.urlencoded({ extended: true }));
 
 
@@ -87,3 +91,32 @@ app.post('/listings',async(req,res)=>{
    await newListing.save();
     res.redirect('/listings')
 })
+
+//edit route
+app.get('/listings/:id/edit',async(req,res)=>{
+
+    let {id}=req.params;
+    const listing=await Listing.findById(id);
+   
+    res.render('listings/edit',{listing});
+})
+
+app.put('/listings/:id',async(req,res)=>{
+    let{id}=req.params;
+   await Listing.findByIdAndUpdate(id,{...req.body.Listing});
+    res.redirect(`/listings/${id}`)
+
+
+})
+
+
+// delete route
+
+app.delete('/listings/:id',async(req,res)=>{
+    let {id}=req.params;
+    let deltedListing=await Listing.findByIdAndDelete(id);
+    res.redirect('/listings')
+})
+
+
+
